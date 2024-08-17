@@ -1,7 +1,7 @@
 {
   "name": "react-components",
   "version": "1.0.0",
-  "description": "",
+  "description": "Diverse Components for React",
   "author": "Emmanuel V. Lopez",
   "license": "ISC",
   "main": "dist/index.js",
