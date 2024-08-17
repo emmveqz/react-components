@@ -10,8 +10,12 @@ import IProps from './TextField.types'
 
 const TextField: FC<IProps> = ({
   autoComplete,
+  endAdornment,
+  inputComponent,
   InputLabelProps,
+  InputProps,
   inputRef,
+  startAdornment,
   // Note: Buggy typescript compiling, so we need to destruct it to declare.
   variant,
   ...props
@@ -25,6 +29,12 @@ const TextField: FC<IProps> = ({
       InputLabelProps={!shrinkLabel ? InputLabelProps : {
         ...InputLabelProps,
         shrink: true,
+      }}
+      InputProps={{
+        ...InputProps,
+        endAdornment,
+        inputComponent,
+        startAdornment,
       }}
       inputRef={inputRef}
       variant={variant ?? 'outlined'}
