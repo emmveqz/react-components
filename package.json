@@ -1,6 +1,6 @@
 {
   "name": "@emmveqz/react-components",
-  "version": "1.0.1",
+  "version": "1.0.0",
   "description": "Diverse Components for React",
   "author": "Emmanuel V. Lopez",
   "license": "ISC",
@@ -21,17 +21,17 @@
   "publishConfig": {
     "registry": "https://npm.pkg.github.com"
   },
-  "dependencies": {
+  "peerDependencies": {
     "@emotion/react": "^11.13.0",
     "@emotion/styled": "^11.13.0",
     "@mui/icons-material": "^5.16.7",
     "@mui/material": "^5.16.7",
-    "react": "^18.3.1",
-    "react-dom": "^18.3.1"
+    "react": ">=18.2.0",
+    "react-dom": "^18.2.0"
   },
   "devDependencies": {
-    "@types/react": "^18.3.3",
-    "@types/react-dom": "^18.3.0",
+    "@types/react": "^18.2.0",
+    "@types/react-dom": "^18.2.0",
     "eslint": "^8.57.0",
     "eslint-config-airbnb": "^19.0.4",
     "eslint-plugin-react": "^7.35.0",
