@@ -29,3 +29,9 @@ and the "Select File" icon to set/change the file.
 
 
 ![FileField](./src/components/FileField/screenshot.png)
+
+### [useAsyncEffect hook](./src/hooks/useAsyncEffect/README.md)
+
+Use React's `useEffect` hook asynchronously (safely).
+
+![useAsyncEffect](./src/hooks/useAsyncEffect/screenshot.gif)
