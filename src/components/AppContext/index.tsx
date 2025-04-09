@@ -55,7 +55,27 @@ export const AppProvider = ({
             return
           }
 
+          /*
           states.current[key].dispatchers.forEach((dispatcher) => dispatcher(newState))
+          */
+
+          const isNewStateCallback = typeof newState === typeof (() => {})
+
+          states.current[key].dispatchers.forEach((dispatcher) => {
+            if (isNewStateCallback) {
+              dispatcher((prevVal) => {
+                const newVal = (newState as (v: IAppProviderProps[IKeys])
+                  => IAppProviderProps[IKeys])(prevVal)
+
+                states.current[key].lastVal = newVal
+
+                return newVal
+              })
+            } else {
+              states.current[key].lastVal = newState as IAppProviderProps[IKeys]
+              dispatcher(newState)
+            }
+          })
         }, [
         ])
 
@@ -68,7 +88,7 @@ export const AppProvider = ({
             console.log('unUseEffect | stateKey:', key)
 
             const idx = states.current[key].dispatchers
-              .findIndex((dispatcher) => dispatcher !== setState);
+              .findIndex((dispatcher) => dispatcher === setState);
 
             if (idx > -1) {
               states.current[key].dispatchers.splice(idx, 1)

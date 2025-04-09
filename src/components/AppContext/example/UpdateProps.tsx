@@ -28,20 +28,18 @@ export const UpdateProps: FC = () => {
   ] = appContext.theme()
 
   const updateProps = () => {
-    if (app.language < 3) {
-      setApp({
-        language: app.language + 1,
-      })
-    } else {
-      setTheme({
-        color: `blue ${Date.now()}`,
-      })
-    }
+    setApp({
+      language: app.language + 1,
+    })
+
+    setTheme({
+      color: `blue ${Date.now()}`,
+    })
   }
 
   return (
     <div>
-      {app.language < 3 && <DisplayPropApp />}
+      {(app.language < 3 || app.language > 6) && <DisplayPropApp />}
       <br />
       <div>
         <button type="button" onClick={updateProps}>
@@ -50,7 +48,7 @@ export const UpdateProps: FC = () => {
         </button>
       </div>
       <br />
-      {app.language > 2 && <DisplayPropTheme />}
+      {app.language > 2 && app.language < 7 && <DisplayPropTheme />}
     </div>
   )
 }
