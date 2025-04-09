@@ -59,11 +59,18 @@ export const AppProvider = ({
           states.current[key].dispatchers.forEach((dispatcher) => dispatcher(newState))
           */
 
+          let newValueReturned = false
           const isNewStateCallback = typeof newState === typeof (() => {})
 
           states.current[key].dispatchers.forEach((dispatcher) => {
             if (isNewStateCallback) {
               dispatcher((prevVal) => {
+                if (newValueReturned) {
+                  return states.current[key].lastVal
+                }
+
+                newValueReturned = true
+
                 const newVal = (newState as (v: IAppProviderProps[IKeys])
                   => IAppProviderProps[IKeys])(prevVal)
 
