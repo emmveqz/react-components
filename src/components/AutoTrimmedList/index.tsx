@@ -96,26 +96,28 @@ const AutoTrimmedList: FC<IProps> = ({
   }, [
   ])
 
+  const isTruncated = truncateIdx > 0
+
   return (
     <div
       {...props}
       ref={containerRef}
     >
-      <div className={truncateIdx > 0 ? undefined : 'single-item'}>
+      <div className={isTruncated ? undefined : 'single-item'}>
         <span>
           {
-            truncateIdx > 0
+            isTruncated
               ? items.slice(0, truncateIdx).join(', ')
               : items.join(', ')
           }
         </span>
 
-        {truncateIdx > 0 && (
+        {isTruncated && (
           <span>{trailingDots}</span>
         )}
       </div>
 
-      {truncateIdx > 0 && (
+      {isTruncated && (
         <Tooltip>
           <div className="tooltip-badge">
             <ItemsBadge numTruncated={items.length - truncateIdx} />
