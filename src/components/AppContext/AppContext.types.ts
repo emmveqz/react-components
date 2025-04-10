@@ -8,31 +8,26 @@ import type {
 //
 
 /**
- * @ToDo Define your global variables here.
- */
-export type IAppProviderProps = {
-  app: {
-    language: number
-  },
-  theme: {
-    color: string,
-  },
-}
 
 export type IKeys = Extract<keyof IAppProviderProps, string>
+*/
 
-export type IDispatcher<T extends IKeys> = Dispatch<SetStateAction<IAppProviderProps[T]>>
+export type IDispatcher<T> = Dispatch<SetStateAction<T>>
 
-export type IAppContextProvider = {
-  [key in IKeys]: () => [
-    IAppProviderProps[key],
-    IDispatcher<key>,
-  ]
+export type IAppContextProvider<T> = {
+  [key in (keyof T)]:
+    /**
+     * This is a react-hook function. Call it accordingly.
+     */
+    () => [
+      T[key],
+      IDispatcher<T[key]>,
+    ]
 }
 
-export type IStateRef = {
-  [key in IKeys]: {
-    dispatchers: IDispatcher<IKeys>[],
-    lastVal: IAppProviderProps[IKeys],
+export type IStateRef<T> = {
+  [key in (keyof T)]: {
+    dispatchers: IDispatcher<T[key]>[],
+    lastVal: T[key],
   }
 }

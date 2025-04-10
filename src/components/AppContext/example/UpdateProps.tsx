@@ -10,12 +10,15 @@ import {
 } from '..'
 import DisplayPropApp from './DisplayPropApp'
 import DisplayPropTheme from './DisplayPropTheme'
+import type {
+  IAppContext,
+} from './types'
 
 //
 
 export const UpdateProps: FC = () => {
   console.log('UpdateProps', Date.now())
-  const appContext = useAppContext()
+  const appContext = useAppContext<IAppContext>()
 
   const [
     app,

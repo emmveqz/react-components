@@ -8,12 +8,15 @@ import React, {
 import {
   useAppContext,
 } from '..'
+import type {
+  IAppContext,
+} from './types'
 
 //
 
 export const DisplayPropTheme: FC = () => {
   console.log('DisplayPropTheme', Date.now())
-  const appContext = useAppContext()
+  const appContext = useAppContext<IAppContext>()
 
   const [
     theme,

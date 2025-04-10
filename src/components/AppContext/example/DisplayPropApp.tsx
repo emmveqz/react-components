@@ -8,12 +8,15 @@ import React, {
 import {
   useAppContext,
 } from '..'
+import type {
+  IAppContext,
+} from './types'
 
 //
 
 export const DisplayPropApp: FC = () => {
   console.log('DisplayPropApp', Date.now())
-  const appContext = useAppContext()
+  const appContext = useAppContext<IAppContext>()
 
   const [
     app,

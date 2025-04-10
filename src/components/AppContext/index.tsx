@@ -1,37 +1,63 @@
 //
 
 /* eslint-disable no-console */
+/* eslint-disable @typescript-eslint/no-unused-expressions */
 
 import React, {
+  type Context,
   createContext,
   type PropsWithChildren,
   useCallback,
   useContext,
   useEffect,
+  useMemo,
   useRef,
   useState,
 } from 'react'
 import type {
   IAppContextProvider,
-  IAppProviderProps,
   IDispatcher,
-  IKeys,
   IStateRef,
 } from './AppContext.types'
 
 export * from './example'
 
+const whoIsMyDaddy = (): string|undefined => {
+  try {
+    throw new Error()
+  } catch (e) {
+    const allMatches = (e as Error)?.stack?.match(/(\w+)@|at (\w+) \(/g)
+    const parentMatches = allMatches?.[1]?.match(/(\w+)@|at (\w+) \(/)
+
+    return parentMatches?.[1] || parentMatches?.[2]
+  }
+}
+
 //
 
-const AppContext = createContext<IAppContextProvider>(undefined as unknown as IAppContextProvider)
+const AppContext = createContext<IAppContextProvider<unknown>>(
+  undefined as unknown as Record<string, unknown>,
+)
 
 //
 
-export const AppProvider = ({
+export const AppProvider: <T extends Record<string, unknown>>(
+  propsWithChildren: PropsWithChildren<{
+    debug?: boolean,
+
+    /**
+     * Memoize this object.
+     */
+    props: T,
+  }>,
+) => JSX.Element = ({
   children,
-  ...props
-}: PropsWithChildren<IAppProviderProps>) => {
+  debug,
+  props,
+}) => {
   console.log('AppProvider', Date.now())
+  type T = typeof props
+  type IKeys = keyof T
 
   const states = useRef((Object.keys(props) as IKeys[])
     .reduce((result, key) => ({
@@ -39,25 +65,22 @@ export const AppProvider = ({
       [key]: {
         dispatchers: [],
         lastVal: props[key],
-      } as IStateRef[IKeys],
-    }), {} as IStateRef))
+      } as IStateRef<T>[IKeys],
+    }), {} as IStateRef<T>))
 
-  const providerValue = (Object.keys(props) as IKeys[])
+  const providerValue = useMemo(() => (Object.keys(props) as IKeys[])
     .reduce((result, key) => ({
       ...result,
       [key]: () => {
         // eslint-disable-next-line react-hooks/rules-of-hooks
         const [state, setState] = useState(states.current[key].lastVal)
+        const caller = debug && whoIsMyDaddy()
 
         // eslint-disable-next-line react-hooks/rules-of-hooks
-        const setState2 = useCallback<IDispatcher<IKeys>>((newState) => {
+        const setState2 = useCallback<IDispatcher<T[IKeys]>>((newState) => {
           if (states.current[key].lastVal === newState) {
             return
           }
-
-          /*
-          states.current[key].dispatchers.forEach((dispatcher) => dispatcher(newState))
-          */
 
           let newValueReturned = false
           const isNewStateCallback = typeof newState === typeof (() => {})
@@ -71,15 +94,15 @@ export const AppProvider = ({
 
                 newValueReturned = true
 
-                const newVal = (newState as (v: IAppProviderProps[IKeys])
-                  => IAppProviderProps[IKeys])(prevVal)
+                const newVal = (newState as (v: T[IKeys])
+                  => T[IKeys])(prevVal)
 
                 states.current[key].lastVal = newVal
 
                 return newVal
               })
             } else {
-              states.current[key].lastVal = newState as IAppProviderProps[IKeys]
+              states.current[key].lastVal = newState as T[IKeys]
               dispatcher(newState)
             }
           })
@@ -88,11 +111,18 @@ export const AppProvider = ({
 
         // eslint-disable-next-line react-hooks/rules-of-hooks
         useEffect(() => {
-          console.log('useEffect | stateKey:', key)
+          debug && console.log(`<${caller} />`, 'used stateKey:', key)
           states.current[key].dispatchers.push(setState)
 
+          debug && console.log(
+            'stateKey:',
+            key,
+            'dispatchers.length:',
+            states.current[key].dispatchers.length,
+          )
+
           return () => {
-            console.log('unUseEffect | stateKey:', key)
+            debug && console.log(`<${caller} />`, 'unused stateKey:', key)
 
             const idx = states.current[key].dispatchers
               .findIndex((dispatcher) => dispatcher === setState);
@@ -101,19 +131,25 @@ export const AppProvider = ({
               states.current[key].dispatchers.splice(idx, 1)
             }
 
-            console.log(
+            debug && console.log(
               'stateKey:',
               key,
               'dispatchers.length:',
               states.current[key].dispatchers.length,
             )
           }
+
+          // eslint-disable-next-line react-hooks/exhaustive-deps
         }, [
         ])
 
         return [state, setState2]
       },
-    }), {} as IAppContextProvider)
+
+      // eslint-disable-next-line react-hooks/exhaustive-deps
+    }), {} as IAppContextProvider<T>), [
+    props,
+  ])
 
   return (
     <AppContext.Provider value={providerValue}>
@@ -122,8 +158,12 @@ export const AppProvider = ({
   )
 }
 
-export const useAppContext = (): IAppContextProvider => {
-  const context = useContext(AppContext)
+export function useAppContext<T>(): IAppContextProvider<T> {
+  const context = useContext(AppContext as Context<IAppContextProvider<T>>)
+
+  if (!context) {
+    throw new Error('useAppContext() was used without an <AppProvider />')
+  }
 
   return context
 }
