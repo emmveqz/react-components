@@ -35,3 +35,10 @@ and the "Select File" icon to set/change the file.
 Use React's `useEffect` hook asynchronously (safely).
 
 ![useAsyncEffect](./src/hooks/useAsyncEffect/screenshot.gif)
+
+
+### [AppContext](./src/components/AppContext/README.md)
+
+A Context Provider that can be consumed with a `useAppContext()` hook, updating its props (thus re-rendering) independently.
+
+Check out the [example](./src/components/AppContext/example/index.tsx)
