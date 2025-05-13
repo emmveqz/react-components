@@ -11,6 +11,28 @@
     "prepack": "rm -fR ./dist   &&   npm run build"
   },
   "homepage": "https://github.com/emmveqz/react-components#readme",
+  "keywords": [
+    "react",
+    "components",
+    "reactjs",
+    "react-components",
+    "ui-components",
+    "async-hooks",
+    "ui-component",
+    "asynchooks",
+    "usecontext",
+    "useasync",
+    "auto-trim",
+    "filefield",
+    "file-field",
+    "filecomponent",
+    "file-component",
+    "trimmed-list",
+    "auto-trimmed-list",
+    "useasynceffect",
+    "useeffect-async",
+    "useeffectasync"
+  ],
   "repository": {
     "type": "git",
     "url": "git+ssh://git@github.com/emmveqz/react-components.git"
@@ -19,7 +41,7 @@
     "url": "https://github.com/emmveqz/react-components/issues"
   },
   "publishConfig": {
-    "registry": "https://npm.pkg.github.com"
+    "registry": "https://registry.npmjs.org"
   },
   "peerDependencies": {
     "@emotion/react": "^11.13.0",

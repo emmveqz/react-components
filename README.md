@@ -6,13 +6,6 @@ Diverse UI Components using React Hooks, [Material UI](https://mui.com/material-
 
  - Just install the npm package, using:  
    `npm install @emmveqz/react-components`
- - You will need to set the package scope in your `.npmrc` file,
-   like this:  
-   `@emmveqz:registry=https://npm.pkg.github.com`
- - You will also need to get a github access token with `read:packages` permission.  
-   You can do that [here](https://github.com/settings/tokens).  
-   Then set your token at your `.npmrc` file, like this:  
-   `//npm.pkg.github.com/:_authToken=YOUR_GITHUB_ACCESS_TOKEN`
 
 ### Auto Trimmed List
 
