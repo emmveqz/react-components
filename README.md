@@ -4,6 +4,8 @@ Diverse UI Components using React Hooks, [Material UI](https://mui.com/material-
 
 ### Instructions
 
+npm package: [@emmveqz/react-components](https://www.npmjs.com/package/@emmveqz/react-components)
+
  - Just install the npm package, using:  
    `npm install @emmveqz/react-components`
 
