@@ -37,3 +37,7 @@ Use React's `useEffect` hook asynchronously (safely).
 A Context Provider that can be consumed with a `useAppContext()` hook, updating its props (thus re-rendering) independently.
 
 Check out the [example](./src/components/AppContext/example/index.tsx)
+
+### [useExternalScript hook](./src/hooks/useExternalScript/)
+
+Load an external script asynchronously, and safely wait for its readiness state.
